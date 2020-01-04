@@ -8,6 +8,7 @@ void init(){
  gluOrtho2D(0, 900, 0, 900);
 }
 
+
 void display(){
  glClear(GL_COLOR_BUFFER_BIT);
  
@@ -86,6 +87,16 @@ void display(){
  glVertex2i(500, 250);
  glVertex2i(500, 200);
  glVertex2i(400, 200);
+ glEnd();
+
+ //Sun between first mountain and house roof
+ glColor3f(1.0, 0.3, 0.0);
+ glBegin(GL_POLYGON);
+ float theta;
+ for(int i=0;i<360;i++){
+  theta = i*3.142/180;
+  glVertex2f(300 +50*cos(theta), 800 + 50*sin(theta));
+  }
  glEnd();
  
  //3rd stair under door
