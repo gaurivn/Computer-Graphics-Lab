@@ -6,7 +6,7 @@
 float x01, x02, y01, y02;
 
 void init(){
- glClearColor(0.9, 0.0, 0.0, 0.5);
+ glClearColor(0.0, 0.0, 0.0, 0.0);
  glMatrixMode(GL_PROJECTION);
  glLoadIdentity();
  gluOrtho2D(-100, 100, -100, 200);
