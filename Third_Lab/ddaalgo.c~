@@ -26,9 +26,9 @@ void display(){
  x = x01;
  y = y01;
 
- glBegin(GL_POINTS);
+ /*glBegin(GL_POINTS);
  glVertex2i(x,y);
- glEnd();
+ glEnd();*/
  for(k=1;k<s;k++){
  x = x + Xincrement;
  y = y + Yincrement;

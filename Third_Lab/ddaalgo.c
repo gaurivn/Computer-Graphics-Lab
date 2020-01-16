@@ -13,6 +13,7 @@ void init(){
 }
 
 void display(){
+ glClear(GL_COLOR_BUFFER_BIT);
  float dy, dx, s, x, y, k, Xincrement, Yincrement;
 
  dx = x02-x01;
