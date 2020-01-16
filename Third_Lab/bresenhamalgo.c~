@@ -1,87 +1,151 @@
-#include<stdio.h>
-#include<math.h>
-#include<GL/glut.h>
+#include <GL/glut.h> 
+#include <math.h> 
+int ww = 600, wh = 400; 
+int first = 0; 
+int xi, yi, xf, yf; 
+void putPixel (int x, int y) 
+{ 
+   glBegin (GL_POINTS); 
+   glVertex2i (x, y); 
+   glEnd (); 
+   glFlush ();
+  } 
 
-int x1, y1, x2, y2;
+void bresenhamAlg (int x0, int y0, int x1, int y1) 
+  { 
+  int dx = abs (x1 - x0); 
+  int dy = abs (y1 - y0); 
+  int x, y; 
+  if (dx >= dy) 
+  { 
+   int d = 2*dy-dx; 
+   int ds = 2*dy; 
+   int dt = 2*(dy-dx); 
+       if (x0 < x1)  
+       { 
+            x = x0; 
+            y = y0; 
+       } 
+        else 
+        {  
+             x = x1; 
+             y = y1; 
+             x1 = x0; 
+             y1 = y0; 
+        } 
+       putPixel (x, y); 
+   while (x < x1) 
+   { 
+        if (d < 0) 
+        d += ds; 
+        else { 
+             if (y < y1) { 
+              y++; 
+              d += dt; 
+             }  
+             else { 
+              y--; 
+              d += dt; 
+             } 
+            } 
+   x++; 
+        putPixel (x, y); 
+       }  }
+       else {  
+             int d = 2*dx-dy; 
+             int ds = 2*dx; 
+             int dt = 2*(dx-dy); 
+             if (y0 < y1) { 
+             x = x0; 
+             y = y0; 
+             } 
+             else {  
+             x = x1; 
+             y = y1; 
+             y1 = y0; 
+             x1 = x0; 
+             } 
+            putPixel (x, y);  
+        while (y < y1) 
+        { 
+              if (d < 0) 
+                 d += ds; 
+              else { 
+                      if (x > x1){ 
+                      x--; 
+                      d += dt; 
+                 } else { 
+                      x++; 
+                      d += dt; 
+                   } 
+              } 
+              y++; 
+              putPixel (x, y); 
+        } 
+       } 
+  } 
+     /*  void mouse(int btn, int state, int x, int y) 
+       { 
+        if(btn==GLUT_LEFT_BUTTON && state == GLUT_DOWN) 
+        { 
+        switch(first) 
+        { 
+        case 0: 
+         xi = x; 
+         yi = (wh-y); 
+         first = 1; 
+         break; 
+        case 1: 
+         xf = x; 
+         yf = (wh-y); */
+        
+glColor3f(1.0,0.0,0.0);
+    bresenhamAlg(xi,yi,xi,yf);
+    bresenhamAlg(xi,yf,xf,yf);
+    bresenhamAlg(xf,yf,xf,yi);
+    bresenhamAlg(xf,yi,xi,yi);
+ glColor3f(0.0,1.0,0.0);
+    bresenhamAlg(xi,(yi+yf)/2,(xi+xf)/2,yf);
+    bresenhamAlg((xi+xf)/2,yf,xf,(yi+yf)/2);
+    bresenhamAlg(xf,(yi+yf)/2,(xi+xf)/2,yi);
+    bresenhamAlg((xi+xf)/2,yi,xi,(yi+yf)/2);   
+ glColor3f(0.0,0.0,1.0);
+    bresenhamAlg((xi+(xi+xf)/2)/2,(yf+(yi+yf)/2)/2,(xf+(xi+xf)/2)/2,(yf+(yi+yf)/2)/2);
+    bresenhamAlg((xf+(xi+xf)/2)/2,(yf+(yi+yf)/2)/2,(xf+(xi+xf)/2)/2,(yi+(yi+yf)/2)/2);
+    bresenhamAlg((xf+(xi+xf)/2)/2,(yi+(yi+yf)/2)/2,(xi+(xi+xf)/2)/2, (yi+(yi+yf)/2)/2);
+    bresenhamAlg((xi+(xi+xf)/2)/2, (yi+(yi+yf)/2)/2,(xi+(xi+xf)/2)/2,(yf+(yi+yf)/2)/2); 
+         first = 0; 
+         break;  
+        } 
+        } 
+       } 
 
-void myInit() {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glMatrixMode(GL_PROJECTION);
-	gluOrtho2D(0, 500, 0, 500);
-}
 
-void draw_pixel(int x, int y) {
-	glBegin(GL_POINTS);
-	glVertex2i(x, y);
-	glEnd();
-}
-
-void draw_line(int x1, int x2, int y1, int y2) {
-	int dx, dy, i, e;
-	int incx, incy, inc1, inc2;
-	int x,y;
-
-	dx = x2-x1;
-	dy = y2-y1;
-
-	if (dx < 0) dx = -dx;
-	if (dy < 0) dy = -dy;
-	incx = 1;
-	if (x2 < x1) incx = -1;
-	incy = 1;
-	if (y2 < y1) incy = -1;
-	x = x1; y = y1;
-	if (dx > dy) {
-		draw_pixel(x, y);
-		e = 2 * dy-dx;
-		inc1 = 2*(dy-dx);
-		inc2 = 2*dy;
-		for (i=0; i<dx; i++) {
-			if (e >= 0) {
-				y += incy;
-				e += inc1;
-			}
-			else
-				e += inc2;
-			x += incx;
-			draw_pixel(x, y);
-		}
-
-	} else {
-		draw_pixel(x, y);
-		e = 2*dx-dy;
-		inc1 = 2*(dx-dy);
-		inc2 = 2*dx;
-		for (i=0; i<dy; i++) {
-			if (e >= 0) {
-				x += incx;
-				e += inc1;
-			}
-			else
-				e += inc2;
-			y += incy;
-			draw_pixel(x, y);
-		}
-	}
-}
-
-void myDisplay() {
-	draw_line(x1, x2, y1, y2);
-	glFlush();
-}
-
-void main(int argc, char **argv) {
-
-	printf( "Enter (x1, y1, x2, y2)\n");
-	scanf("%d %d %d %d", &x1, &y1, &x2, &y2);
-
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(0, 0);
-	glutCreateWindow("Bresenham's Line Drawing");
-	myInit();
-	glutDisplayFunc(myDisplay);
-	glutMainLoop();
-}
+  void display() 
+  { 
+   glClearColor(0.4, 0.7, 0.5, 1.0); 
+   bresenham(x0, y0, x1, y1);
+   glClear(GL_COLOR_BUFFER_BIT); 
+   glFlush(); 
+  } 
+  
+  void myinit() 
+  {       
+     glViewport(0,0,ww,wh); 
+     glMatrixMode(GL_PROJECTION); 
+     glLoadIdentity(); 
+     gluOrtho2D(0.0,(GLdouble)ww,0.0,(GLdouble)wh); 
+     glMatrixMode(GL_MODELVIEW); 
+  } 
+  int main(int argc, char** argv) 
+  { 
+     glutInit(&argc,argv); 
+     glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB); 
+     glutInitWindowSize(ww,wh); 
+     glutCreateWindow("Bresenham Line Algorithm With Mouse"); 
+     glutDisplayFunc(display); 
+     myinit(); 
+     glutMouseFunc(mouse); 
+     glutMainLoop(); 
+     return 0; 
+  } 

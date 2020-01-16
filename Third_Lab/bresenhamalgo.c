@@ -17,7 +17,7 @@ void draw_pixel(int x, int y) {
 	glEnd();
 }
 
-void draw_line(int x1, int x2, int y1, int y2) {
+void draw_line(int x01, int x02, int y01, int y02) {
 	int dx, dy, i, e;
 	int incx, incy, inc1, inc2;
 	int x,y;
@@ -85,3 +85,16 @@ void main(int argc, char **argv) {
 	glutDisplayFunc(myDisplay);
 	glutMainLoop();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
