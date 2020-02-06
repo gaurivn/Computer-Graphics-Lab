@@ -265,8 +265,11 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void mouse(int button, int state, int x, int y){
- if(button==GLUT_LEFT_BUTTON){ // && state==GLUT_DOWN){
-  glutDisplayFunc(draw_wheel);
+ if(button==GLUT_LEFT_BUTTON && state==GLUT_DOWN){
+  draw_wheel();
+  }
+ if(button==GLUT_RIGHT_BUTTON && state==GLUT_DOWN){
+  draw_wheel2();
   }
 }
 
